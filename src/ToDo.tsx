@@ -1,15 +1,19 @@
 import React from 'react';
 import Button from "./Button";
 import TodoListHeader from "./TodoListHeader";
-import {TaskType} from "./App";
+import {FilterValuesType, TaskType} from "./App";
 import Task from "./Task";
+import task from "./Task";
 
 type TodoListPropsType={
     title: string
     tasks: Array<TaskType>
+    removeTask: (taskID:number)=>void
+    changeFilter: (filter:FilterValuesType) =>void
 }
 
 const ToDo = (props:TodoListPropsType) => {
+    const tasksComponents = props.tasks.map(t=> <Task key={t.id} {...t} removeTask={props.removeTask}/>)
     return (
         <div>
             <TodoListHeader title={props.title}/>
@@ -18,17 +22,15 @@ const ToDo = (props:TodoListPropsType) => {
                 <button>+</button>
             </div>
             <ul>
-                <Task key={props.tasks[0].id} {...props.tasks[0]}/>
-                <Task key={props.tasks[1].id} {...props.tasks[1]}/>
-                <Task key={props.tasks[2].id} {...props.tasks[2]}/>
-
-
-
+                {tasksComponents}
             </ul>
             <div>
-                <Button title={"All"}/>
-                <Button title={"Active"}/>
-                <Button title={"Completed"}/>
+                <Button title={"All"}
+                        onClickHandler ={()=> props.changeFilter("All")}/>
+                <Button title={"Active"}
+                        onClickHandler ={()=> props.changeFilter("Active")}/>
+                <Button title={"Completed"}
+                        onClickHandler ={()=> props.changeFilter("Completed")}/>
             </div>
         </div>
     );
