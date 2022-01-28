@@ -32,11 +32,16 @@ function App() {
         const updatedTasks: Array<TaskType> = [newTask, ...tasks]
         setTasks(updatedTasks)
     }
+    const changeTaskStatus = (taskID: string, isDone: boolean) => {
+        setTasks(tasks.map(t => t.id === taskID ? {...t, isDone: isDone} : t))   // isDone  означает isDone: isDone. если имя одинаковое можно сократить
 
-    const [filter, setFilter] = useState<FilterValuesType>("All")
+    }
     const changeFilter = (filter: FilterValuesType) => {
         setFilter(filter)
     }
+
+    const [filter, setFilter] = useState<FilterValuesType>("All")
+
     const getTasksForRender = () => {
         switch (filter) {
             case "Active":
@@ -52,7 +57,7 @@ function App() {
     return (
         <div className="App">
             <ToDo title={todoListTitle} tasks={tasksForRender} removeTask={removeTask} changeFilter={changeFilter}
-                  addTask={addTask}/>
+                  addTask={addTask} changeTaskStatus={changeTaskStatus}filter={filter} />
         </div>
     );
 }
